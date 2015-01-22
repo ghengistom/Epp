@@ -1,0 +1,60 @@
+#include<iostream>
+#include<algorithm>
+#include<iomanip>
+float Average(float JudgeScores[], int NoJudges);
+
+using namespace std;
+
+int main()
+{
+	int ContNum = 0;
+	int NoJudges = 0;
+	float JudgeScores[10];
+	float ave = 0.0;
+	float highestAve = 0;
+	int highestCont = 0;
+
+	cout << fixed << showpoint << setprecision(5);
+	cout << "Please enter how many judges ";
+	cin >> NoJudges;
+	cout << "\n";
+	while (ContNum >= 0)
+	{
+		cin >> ContNum;
+		if (ContNum < 0)
+			break;
+		else
+
+		for (int i = 0; i < NoJudges; ++i)
+		{
+			cin >> JudgeScores[i];
+		}
+		sort(JudgeScores, JudgeScores + NoJudges);
+		ave = Average(JudgeScores, NoJudges);
+		cout << "The average judge score was: " << ave << "\n";
+
+			if (ave > highestAve)
+			{
+				highestAve = ave;
+				highestCont = ContNum;
+
+			}
+	}
+	cout << "The contestant with the highest score of " << highestAve;
+	cout << "\n is contestant number " << highestCont;
+	
+	
+	system("pause");
+	return 0;
+}
+
+float Average(float JudgeScores[], int NoJudges)
+{
+	float sum = 0.0;
+	for (int i = 1; i < NoJudges-1; ++i)
+	{
+		sum += JudgeScores[i];
+	}
+	return (sum / (NoJudges - 2));
+	
+}
