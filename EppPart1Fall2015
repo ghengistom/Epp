@@ -1,0 +1,95 @@
+#include <iostream>
+
+using namespace std;
+float findAverageScore(int N, int J[]);
+
+int main()
+{
+	int N = 0;														//# of judges
+	int *J = new int[N];											//array of judges scores
+	int *holdave = new int[N];										//array to hold averages
+	int *contno = new int[N];										//contestent numbers
+	int contestent = 0;
+
+
+	cout << "Number of Judges: ";
+	cin >> N;
+	cout << endl;
+	cin >> contestent;
+	// take in contestant number and then N scores
+	int count = 0;
+	while (contestent > -1)
+	{
+		//hold contestant number into array
+
+		cout << "     ";
+		contno[count] = contestent;
+		//now get score for each contestant
+		for (int i = 0; i < N; ++i)
+		{
+			cin >> J[i];
+		}
+		//now print out contestant number and average
+		//store average into array
+		cout << "Contestant " << contestent;
+		cout << " ";
+		cout << findAverageScore(N, J);
+		cout << "\n";
+		holdave[count] = findAverageScore(N, J);
+		count++;
+		cin >> contestent;
+	}
+	//spit out highest average score
+	int saveposition = 0;
+	float highave = holdave[0];
+	//run for loop to check all average scores
+	for (int i = 0; i<count; ++i)
+	{
+		if (highave<holdave[i])
+		{
+			highave = holdave[i];
+			saveposition = i;
+		}
+	}
+	cout << "\nContestant " << contno[saveposition] << " had the highest score. ";
+	cout << endl;
+	system("pause");
+	return 0;
+}
+
+
+
+
+float findAverageScore(int N, int J[])
+{
+	int high = J[0];
+	int low = J[0];
+	int sum = 0;
+
+	//check for high and low
+	//condition for high
+	for (int i = 0; i<N; ++i)
+	{
+		if (J[i] > high)
+		{
+			high = J[i];
+		}
+	}
+	//condition for low
+	for (int i = 0; i<N; ++i)
+	{
+		if (J[i] < low)
+		{
+			low = J[i];
+		}
+	}
+	//add up numbers in array subtract high and low
+	for (int i = 0; i < N; ++i)
+	{
+		sum += J[i];
+	}
+	//after you get total subtract high and low
+	sum = sum - high - low;
+	return sum / 3.0;
+
+}
