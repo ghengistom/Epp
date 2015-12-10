@@ -1,0 +1,161 @@
+#include <iostream>
+
+
+using namespace std;
+
+class Node
+{
+private:
+	int info;
+	Node *nextPtr;
+
+public:
+	void insertatendhelper(Node *&ptr, int num);
+	void printhelper(Node *ptr);
+	bool deleteback(Node *&ptr);
+	void insertbackNC(Node *&ptr, int num);
+	bool Node::finddel(Node *&ptr, int n);
+};
+void menu();
+Node *rootPtr = NULL;
+
+int main()
+{
+	menu();
+
+	system("pause");
+	return 0;
+}
+
+void menu()
+{
+	char choice = ' ';
+	int n = 0;
+	bool quit = false;
+	int num = 0;
+
+	while (!quit)
+	{
+		cout << "(a) for insert at end of linked list \n";
+		cout << "(n) for insert at end of linked list not recursive \n";
+		cout << "(d) for delete at end of the linked list \n";
+		cout << "(b) for printing the linked list \n";
+		cout << "(f) for find and delete node in the linked list \n";
+		cout << "(q) for quiting \n\n";
+
+		cin >> choice;
+		choice = toupper(choice);
+
+		switch (choice)
+		{
+		case 'A':
+			system("CLS");
+			cout << "\nPlease enter a num to input\n";
+			cin >> num;
+			rootPtr->insertatendhelper(rootPtr, num);
+			break;
+		case 'B':
+			rootPtr->printhelper(rootPtr);
+			cout << endl;
+			break;
+		case 'D':
+			rootPtr->deleteback(rootPtr);
+			cout << endl;
+			break;
+		case 'F':
+			cout << "Enter a number to find and delete ";
+			cin >> num;
+			rootPtr->finddel(rootPtr, num);
+			cout << endl;
+			break;
+		case 'N':
+			system("CLS");
+			cout << "\nPlease enter a num to input\n";
+			cin >> num;
+			rootPtr->insertbackNC(rootPtr, num);
+			break;
+		case 'Q':
+			quit = true;
+			break;
+
+		default:;
+		}
+
+	}
+}
+
+void Node::insertatendhelper(Node *&ptr, int num)
+{
+	Node *baby = new Node;
+	baby->info = num;
+
+	if (ptr == NULL)
+	{
+		ptr = baby;
+		baby->nextPtr = NULL;
+		return;
+	}
+	return insertatendhelper(ptr->nextPtr, num);
+}
+
+void Node::printhelper(Node *ptr)
+{
+	if (ptr == NULL)
+	{
+		return;
+	}
+	cout << ptr->info << " ";
+	printhelper(ptr->nextPtr);
+
+}
+void Node::insertbackNC(Node *&first, int num)
+{
+	// create Node
+	Node *temp = new Node;
+	temp->info = num;
+	temp->nextPtr = NULL;
+
+	if (!first) { // empty list becomes the new Node
+		first = temp;
+		return;
+	}
+	else { // find last and link the new Node
+		Node* last = first;
+		while (last->nextPtr) last = last->nextPtr;
+		last->nextPtr = temp;
+	}
+}
+bool Node::deleteback(Node *&ptr)
+{
+	if (ptr == NULL)
+	{
+		
+		return false;
+	}
+	if (ptr->nextPtr == NULL)
+	{
+		
+		delete ptr;
+		ptr = NULL;
+		return true;
+	}
+	return deleteback(ptr->nextPtr);
+}
+bool Node::finddel(Node *&ptr, int n)
+{
+	if (ptr == NULL)
+	{
+		cout << "Didn't Find....."<<n;
+		return false;
+	}
+	if (ptr->info == n)
+	{
+		cout << "Found" << ptr->info << " and deleting it!";
+		Node *prev = ptr;
+		ptr = ptr->nextPtr;
+		prev->nextPtr = NULL;
+		delete prev;
+		return true;
+	}
+	return finddel(ptr->nextPtr, n);
+}
