@@ -1,0 +1,121 @@
+//This is problem 2 and 3 
+
+#include <iostream> 
+using namespace std;
+
+class TreeNode
+{
+public:
+	TreeNode(int = 0);
+	//FUNCTIONS
+	TreeNode createTree(int value, TreeNode *&ptr);
+	void print(TreeNode *ptr);
+	void print2(TreeNode *ptr);
+	int TreeNode::max(TreeNode *ptr);
+
+	//variables
+	int info;
+	TreeNode *leftPtr;
+	TreeNode *rightPtr;
+};
+
+TreeNode *rootPtr = NULL;
+
+int main()
+{
+	int n = 0;
+	int value = 0;
+
+
+	rootPtr->createTree(12, rootPtr);
+	rootPtr->createTree(2, rootPtr);
+	rootPtr->createTree(67, rootPtr);
+	rootPtr->createTree(14, rootPtr);
+	rootPtr->createTree(126, rootPtr);
+	rootPtr->createTree(21, rootPtr);
+	rootPtr->createTree(62, rootPtr);
+	rootPtr->createTree(142, rootPtr);
+	rootPtr->print(rootPtr);
+	cout << endl;
+	rootPtr->print2(rootPtr);
+	cout << "\n\nThe max is :" << rootPtr->max(rootPtr);
+	system("pause");
+	return 0; 
+}
+//Constructor
+TreeNode::TreeNode(int data)
+{
+	info = data;
+	leftPtr = NULL;
+	rightPtr = NULL;
+}
+TreeNode TreeNode::createTree(int value, TreeNode *&ptr)
+{
+	TreeNode *baby = new TreeNode;
+
+	if (ptr == NULL)
+	{
+		ptr = baby;
+		baby->info = value;
+		baby->leftPtr = NULL;
+		baby->rightPtr = NULL;
+	}
+	else
+	{
+		if (value < ptr->info)									//if number value less than node content
+		{
+			return createTree(value, ptr->leftPtr);				//traverse left
+		}
+		if (value > ptr->info)
+		{
+			return createTree(value, ptr->rightPtr);
+		}
+		cout << value << "dup" << endl;
+	}
+}
+void TreeNode::print(TreeNode *ptr)
+{
+	if (!ptr == NULL)
+	{
+		cout << ptr->info << " ";
+		print(ptr->leftPtr);
+		print(ptr->rightPtr);
+	}
+
+}
+void TreeNode::print2(TreeNode *ptr)
+{
+	if (!ptr == NULL)
+	{
+		print(ptr->leftPtr);
+		cout << ptr->info << " ";
+		print(ptr->rightPtr);
+	}
+
+}
+int TreeNode::max(TreeNode *ptr)
+{
+	int max1 = ptr->info;
+
+	if (ptr == NULL)
+	{
+		return 0;
+	}
+	if (ptr->leftPtr!=NULL)
+	{
+		int leftmax = max(ptr->leftPtr);
+		if (max1 < leftmax)
+			max1 = leftmax;
+	}
+	if (ptr->rightPtr !=NULL)
+	{
+		int rightmax = max(ptr->rightPtr);
+		if (max1 < rightmax)
+			max1 = rightmax;
+	}
+	return max1;
+}
+
+/*
+
+*/
