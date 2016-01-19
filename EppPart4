@@ -1,0 +1,218 @@
+//Tom Bernard
+//894304765
+/*
+This program will use a QUEUE data structure in order to accomplish the job that needs to be done.
+I chose the QUEUE data structure since it utilizes the first in first out concept.
+You don't want your clients to get upset cause you service people who came after you in line.
+
+When the program runs it collects client's names from txt file for the current day to service.
+It then displays  menu for the user to make a selection.
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+class Meque
+{
+private:
+	int jobid;							
+	string description;					
+	string contactname;					
+	int phoneext;
+	Meque *nextPtr;
+
+public:
+	Meque();
+	bool Insert(int jobid, string description, string contactname, int phoneext, Meque *&ptr);
+	bool Displaydq();
+	void readfile(Meque *ptr);		//used to read data from txt and insert into QUE							
+	void writefile(Meque *ptr);		//used at end to store people from STANDARD into QUE
+};
+Meque *head;						//make a head pointer for QUE
+
+//void readfile(Meque *ptr);						
+void menu();
+int main()
+{
+	Meque standard, emergency;
+	Meque *head = NULL;
+
+	char choice;						//this is for selecting choices in menu
+	char choice2;						//choice2 is used for chosing emergency or standard
+	int jobid;
+	string description;
+	string name;
+	int phoneext;
+				
+	//standard.readfile(head);			//at start of program read files from txt file
+	
+
+	//display menu
+	do
+	{
+		menu();
+		cin >> choice;
+		choice = toupper(choice);
+		switch (choice)
+		{
+		case 'N':
+			cout << "\nEnter 'E' for emergency, 'S' for standard: ";
+			cin >> choice2;
+			choice2 = toupper(choice2);
+			if (choice2 == 'E')
+			{
+				cout << "\nJob ID: ";
+				cin >> jobid;
+				cout << "\nJob description: ";
+				cin >> description;
+				cout << "\nContact name: ";
+				cin >> name;
+				cout << "\nPhone ext: ";
+				cin >> phoneext;
+
+				emergency.Insert(jobid, description, name, phoneext, head);
+			}
+			if (choice2 == 'S')
+			{
+				cout << "\nJob ID: ";
+				cin >> jobid;
+				cout << "\nJob description: ";
+				cin >> description;
+				cout << "\nContact name: ";
+				cin >> name;
+				cout << "\nPhone ext: ";
+				cin >> phoneext;
+				standard.Insert(jobid, description, name, phoneext, head);
+			}
+
+			break;
+		case 'A':
+			cout << "\nEnter 'E' for emergency, 'S' for standard: ";
+			cin >> choice2;
+			choice2 = toupper(choice2);
+			if (choice2 == 'E')
+			{
+				emergency.Displaydq();
+			}
+			if (choice2 == 'S')
+			{
+				standard.Displaydq();
+			}
+			break;
+		case 'Q':
+			//emergency.Displaydq();				//deque all that is in emergency list
+			//standard.writefile(head);				//when user quits write all data from standard into memory QUE data structure memory
+			choice = 'Q';
+			break;
+		default:;
+		}
+	} while (choice != 'Q');
+	
+
+	//system("pause");
+	return 0;
+}
+
+
+//displays menu for user to see
+void menu()
+{
+	cout << "Select one of the following options by typing the corresponding letter: \n";
+	cout << "N: enter a new job\n";
+	cout << "A: assign a job\n";
+	cout << "Q: quit \n";
+}
+
+//contructor
+Meque::Meque()
+{
+	head = NULL;
+}
+//my enque function!!
+bool Meque::Insert(int jobid, string description, string contactname, int phoneext, Meque *&ptr)
+{
+		Meque *newPtr = new Meque;
+		newPtr->jobid = jobid;
+		newPtr->description = description;
+		newPtr->contactname = contactname;
+		newPtr->phoneext = phoneext;
+
+
+		if (head == NULL)
+		{
+			head = newPtr;
+			return false;
+		}
+		head->nextPtr = newPtr;
+		head = newPtr;
+		return true;
+	
+}
+//my deque function!!
+bool Meque::Displaydq()
+{
+
+	if (head == NULL)
+	{
+		cout << "\nThis is empyt!!\n";
+		return false;
+
+	}
+	Meque *tmpptr = head;
+	head = head->nextPtr;
+
+	cout << "Deleting..........\n";
+	cout << tmpptr->jobid<<"\n";
+	cout << tmpptr->description << "\n";
+	cout << tmpptr->contactname << "\n";
+	cout << tmpptr->phoneext << "\n";
+
+	delete tmpptr;
+	return true;
+
+}
+//this function handles all the reading "txt file " work
+void Meque::readfile(Meque *ptr)
+{
+	ptr = head;
+
+	fstream fread;
+	fread.open("Save.txt");
+
+	//if the file is empty write
+	//There were no saved jobs!
+	/* if(fread is empty do that!!*/
+
+	while (!fread)
+	{
+		fread >> ptr->jobid;
+		fread >> ptr->description;
+		fread >> ptr->contactname;
+		fread >> ptr->phoneext;
+		ptr = ptr->nextPtr;
+	}
+	fread.close();
+
+}
+//this function handles all the writing "txt file " work
+void Meque::writefile(Meque *ptr)
+{
+	ptr = head;
+
+	fstream fread;
+	fread.open("Save.txt");
+
+	while (!fread)
+	{
+		fread << ptr->jobid;
+		fread << ptr->description;
+		fread << ptr->contactname;
+		fread << ptr->phoneext;
+		ptr = ptr->nextPtr;
+	}
+	fread.close();
+
+}
